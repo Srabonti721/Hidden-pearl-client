@@ -5,9 +5,9 @@ import loginAnimation from "../../assets/lotties/Confetti.json";
 const Login = () => {
     const handleLogin = (e) => {
         e.preventDefault();
-
-        const email = e.target.email.value;
-        const password = e.target.password.value;
+        const form = e.target;
+        const email = form.email.value;
+        const password = form.password.value;
 
         console.log(email, password);
     };
