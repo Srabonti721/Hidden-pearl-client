@@ -1,15 +1,24 @@
 import { use } from "react";
 import { Link, NavLink } from "react-router";
+import Swal from "sweetalert2";
+import userIcon from "../../assets/user.png";
 import { AuthContext } from "../../context/AuthProvider";
-import userIcon from "../../assets/user.png"
 const Navbar = () => {
-    const { user } = use(AuthContext);
+    const { user, userLogout } = use(AuthContext);
+    const handleLogout = () => {
+        userLogout()
+            .then(() => {
+                Swal.fire({
+                    title: "Logout successfull",
+                    icon: "success",
+                    draggable: true,
+                });
+            })
+            .catch((error) => console.log(error));
+    };
     const links = (
         <>
-            <NavLink
-                to={"/"}
-                className="ml-2 text-xl hover:text-orange-300 "
-            >
+            <NavLink to={"/"} className="ml-2 text-xl hover:text-orange-300 ">
                 Home
             </NavLink>
             <NavLink
@@ -73,27 +82,34 @@ const Navbar = () => {
             <div className="navbar-end">
                 {user ? (
                     <>
-                        <div className="avatar  tooltip tooltip-bottom" data-tip={user?.email}>
-                            <div className="w-14 rounded-full " >
+                        <div
+                            className="avatar  tooltip tooltip-bottom"
+                            data-tip={user?.email}
+                        >
+                            <div className="w-10 rounded-full ">
                                 <img
-                                   
-                                    src={`${user ? user.photoURL :userIcon}`}
+                                    src={`${user ? user.photoURL : userIcon}`}
                                 />
                             </div>
                         </div>
-                        <button className="btn ml-2">logout</button>
+                        <button
+                            onClick={handleLogout}
+                            className="btn text-xl ml-2 bg-orange-400 text-white rounded-full"
+                        >
+                            logout
+                        </button>
                     </>
                 ) : (
                     <>
                         <Link
                             to={"/login"}
-                            className="btn mr-2 bg-orange-400 text-white rounded-full"
+                            className="btn mr-2 text-xl bg-orange-400 text-white rounded-full"
                         >
                             Login
                         </Link>
                         <Link
                             to={"/register"}
-                            className="btn bg-orange-400 text-white rounded-full"
+                            className="btn text-xl bg-orange-400 text-white rounded-full"
                         >
                             Register
                         </Link>

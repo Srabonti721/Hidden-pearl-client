@@ -1,20 +1,48 @@
 import { Lottie } from "lottie-react";
 import { Link } from "react-router";
 import loginAnimation from "../../assets/lotties/Confetti.json";
+import useAuth from "../../Hook/useAuth";
+import Swal from "sweetalert2";
 
 const Login = () => {
+    const {loginUser, googleSignIn} = useAuth();
+
     const handleLogin = (e) => {
         e.preventDefault();
         const form = e.target;
         const email = form.email.value;
         const password = form.password.value;
-
         console.log(email, password);
+        loginUser(email, password)
+        .then(result=>{
+                                      Swal.fire({
+                    position: "top-end",
+                    icon: "success",
+                    title: "Your login sucessfully",
+                    showConfirmButton: false,
+                    timer: 1500,
+                }); 
+            console.log(result.user);
+        })
+        .catch(error=>console.log(error))
     };
+    // google Sign in
+    const handleGoogleSignIn = () =>{
+        googleSignIn()
+        .then(result=>{
+                            Swal.fire({
+                    position: "top-end",
+                    icon: "success",
+                    title: "Your google login sucessfully",
+                    showConfirmButton: false,
+                    timer: 1500,
+                }); 
+                console.log(result);
+                
+        })
+.catch(error=>console.log(error))
+    }
 
-    // const handleGoogleLogin = () => {
-    //     console.log("Google login");
-    // };
     return (
         <div className="min-h-screen  from-blue-50 via-white to-purple-50 flex items-center justify-center px-4 py-10">
             <div className="w-full max-w-5xl bg-white rounded-3xl shadow-xl overflow-hidden">
@@ -98,7 +126,7 @@ const Login = () => {
                         </div>
 
                         {/* Google Login */}
-                        <button className="w-full border border-gray-300 hover:bg-gray-50 font-semibold text-gray-700 py-3 rounded-xl transition duration-200 flex items-center justify-center gap-3">
+                        <button onClick={handleGoogleSignIn} className="w-full border border-gray-300 hover:bg-gray-50 font-semibold text-gray-700 py-3 rounded-xl transition duration-200 flex items-center justify-center gap-3">
                             <svg
                                 aria-label="Google logo"
                                 width="24"

@@ -1,10 +1,12 @@
 import { Lottie } from "lottie-react";
-import { use } from "react";
+import { use, useState } from "react";
 import { Link } from "react-router";
+import Swal from "sweetalert2";
 import registerAnimation from "../../assets/lotties/Register (1).json";
 import { AuthContext } from "../../context/AuthProvider";
 
 const Register = () => {
+    const [password, setPassword] = useState("");
     const { createUser, updateUserProfile } = use(AuthContext);
 
     const handleRegister = (e) => {
@@ -15,9 +17,25 @@ const Register = () => {
         const photoURL = form.photoURL.value;
         const password = form.password.value;
         console.log(name, email, photoURL, password);
+        if (password.length < 6) {
+            return setPassword("Password must be at least 6 characters");
+        }
+        if (!/[A-Z]/.test(password)) {
+            return setPassword("Password must have an uppercase letter");
+        }
+        if (!/[a-z]/.test(password)) {
+            return setPassword("Password must have a lowercase letter");
+        }
         createUser(email, password)
             .then((result) => {
                 console.log(result.user);
+                Swal.fire({
+                    position: "top-end",
+                    icon: "success",
+                    title: "Your Created sucessfully",
+                    showConfirmButton: false,
+                    timer: 1500,
+                });
                 updateUserProfile(name, photoURL);
                 console.log("After update:", name, photoURL);
             })
@@ -122,6 +140,11 @@ const Register = () => {
                                     className="w-full px-4 py-3 border border-gray-300 rounded-xl outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-100 transition"
                                     required
                                 />
+                                {password && (
+                                    <p className="text-red-600 ">{password}</p>
+                                )}
+
+                                <div className="mt-3 space-y-1 text-sm"></div>
                             </div>
 
                             {/* Register Button */}

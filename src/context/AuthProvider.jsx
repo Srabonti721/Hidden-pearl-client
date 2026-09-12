@@ -1,12 +1,18 @@
 import {
     createUserWithEmailAndPassword,
+    GoogleAuthProvider,
     onAuthStateChanged,
+    signInWithEmailAndPassword,
+    signInWithPopup,
+    signOut,
     updateProfile,
 } from "firebase/auth";
 import { createContext, useEffect, useState } from "react";
 import { auth } from "../firebase/firabase.init";
 
 export const AuthContext = createContext(null);
+
+const provider = new GoogleAuthProvider();
 
 const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
@@ -16,6 +22,18 @@ const AuthProvider = ({ children }) => {
         setLoading(false);
         return createUserWithEmailAndPassword(auth, email, password);
     };
+    const loginUser = (email, password) =>{
+        setLoading(true)
+        return signInWithEmailAndPassword(auth, email, password)
+    }
+    const googleSignIn = () =>{
+        setLoading(true);
+        return signInWithPopup(auth, provider)
+    }
+    const userLogout = ()=>{
+        setLoading(true)
+        return signOut(auth)
+    }
     const updateUserProfile = (name, photoURL) =>{
         setLoading(true)
         return updateProfile(auth.currentUser, {
@@ -41,6 +59,9 @@ const AuthProvider = ({ children }) => {
         loading,
         createUser,
         updateUserProfile,
+        loginUser,
+        googleSignIn,
+        userLogout,
     };
     return <AuthContext value={userInfo}>{children}</AuthContext>;
 };
