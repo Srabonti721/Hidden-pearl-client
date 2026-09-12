@@ -1,15 +1,33 @@
+import { use } from "react";
 import { Link, NavLink } from "react-router";
-
+import { AuthContext } from "../../context/AuthProvider";
+import userIcon from "../../assets/user.png"
 const Navbar = () => {
+    const { user } = use(AuthContext);
     const links = (
         <>
-              <NavLink to={'/'} className="ml-2 text-xl hover:text-orange-300 text-white">Home</NavLink>
-                <NavLink to={'/allFoods'} className="ml-2 text-xl hover:text-orange-300 text-white">All Foods</NavLink>
-                <NavLink to={'/gallery'} className="ml-2 text-xl hover:text-orange-300 text-white">Gallery</NavLink>
+            <NavLink
+                to={"/"}
+                className="ml-2 text-xl hover:text-orange-300 "
+            >
+                Home
+            </NavLink>
+            <NavLink
+                to={"/allFoods"}
+                className="ml-2 text-xl hover:text-orange-300 "
+            >
+                All Foods
+            </NavLink>
+            <NavLink
+                to={"/gallery"}
+                className="ml-2 text-xl hover:text-orange-300 "
+            >
+                Gallery
+            </NavLink>
         </>
     );
     return (
-        <div className="navbar bg-black shadow-sm">
+        <div className="navbar bg-white shadow-sm">
             <div className="navbar-start">
                 <div className="dropdown">
                     <div
@@ -47,18 +65,40 @@ const Navbar = () => {
                     src="https://img.icons8.com/?size=64&id=BZObKCd3ZSVS&format=png"
                     alt=""
                 />
-                <a className="text-3xl font-bold text-white">Hidden Pearl</a>
+                <a className="text-3xl font-bold">Hidden Pearl</a>
             </div>
             <div className="navbar-center hidden lg:flex">
                 <ul className="menu menu-horizontal px-1">{links}</ul>
             </div>
             <div className="navbar-end">
-                <Link to={'/login'} className="btn mr-2 bg-orange-400 text-white rounded-full">
-                    Login
-                </Link>
-                <Link to={'/register'} className="btn bg-orange-400 text-white rounded-full">
-                    Register
-                </Link>
+                {user ? (
+                    <>
+                        <div className="avatar  tooltip tooltip-bottom" data-tip={user?.email}>
+                            <div className="w-14 rounded-full " >
+                                <img
+                                   
+                                    src={`${user ? user.photoURL :userIcon}`}
+                                />
+                            </div>
+                        </div>
+                        <button className="btn ml-2">logout</button>
+                    </>
+                ) : (
+                    <>
+                        <Link
+                            to={"/login"}
+                            className="btn mr-2 bg-orange-400 text-white rounded-full"
+                        >
+                            Login
+                        </Link>
+                        <Link
+                            to={"/register"}
+                            className="btn bg-orange-400 text-white rounded-full"
+                        >
+                            Register
+                        </Link>
+                    </>
+                )}
             </div>
         </div>
     );
