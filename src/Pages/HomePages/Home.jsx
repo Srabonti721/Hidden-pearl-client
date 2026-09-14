@@ -1,4 +1,5 @@
 import Banner from "./Banner";
+import OurStory from "./OurStory";
 import RestaurantStats from "./RestaurantStats";
 import TopFoods from "./TopFoods";
 
@@ -11,7 +12,9 @@ const Home = () => {
         <div>
             <Banner />
             <TopFoods foodsPromice={foodsPromice} />
+            <OurStory/>
             <RestaurantStats/>
+
         </div>
     );
 };
