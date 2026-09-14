@@ -1,4 +1,5 @@
 import Banner from "./Banner";
+import RestaurantStats from "./RestaurantStats";
 import TopFoods from "./TopFoods";
 
 const foodsPromice = fetch("http://localhost:3000/foods").then((res) =>
@@ -10,6 +11,7 @@ const Home = () => {
         <div>
             <Banner />
             <TopFoods foodsPromice={foodsPromice} />
+            <RestaurantStats/>
         </div>
     );
 };
