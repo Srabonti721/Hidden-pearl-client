@@ -4,7 +4,7 @@ import useAuth from "../../Hook/useAuth";
 const API_URL = "http://localhost:3000/foods";
 
 const AddFood = () => {
-  const { user } = useAuth();
+  const { user, authToken } = useAuth();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -26,7 +26,7 @@ const AddFood = () => {
     try {
       const response = await fetch(API_URL, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", ...(authToken ? { Authorization: "Bearer " + authToken } : {}) },
         body: JSON.stringify(food),
       });
       if (!response.ok) throw new Error("Unable to add food.");

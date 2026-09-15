@@ -3,6 +3,7 @@ import { Link, NavLink } from "react-router";
 import Swal from "sweetalert2";
 import userIcon from "../../assets/user.png";
 import { AuthContext } from "../../context/AuthProvider";
+import ThemeToggle from "./ThemeToggle";
 const Navbar = () => {
     const { user, userLogout } = use(AuthContext);
     const handleLogout = () => {
@@ -47,6 +48,14 @@ const Navbar = () => {
                     className="ml-2 text-xl hover:text-orange-300 "
                 >
                     Add Food
+                </NavLink>
+            )}
+            {user && (
+                <NavLink
+                    to="/my-orders"
+                    className="ml-2 text-xl hover:text-orange-300 "
+                >
+                    My Orders
                 </NavLink>
             )}
         </>
@@ -96,6 +105,7 @@ const Navbar = () => {
                 <ul className="menu menu-horizontal px-1">{links}</ul>
             </div>
             <div className="navbar-end">
+                <ThemeToggle />
                 {user ? (
                     <>
                         <div

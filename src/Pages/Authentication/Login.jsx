@@ -1,46 +1,50 @@
 import { Lottie } from "lottie-react";
-import { Link } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import loginAnimation from "../../assets/lotties/Confetti.json";
 import useAuth from "../../Hook/useAuth";
 import Swal from "sweetalert2";
 
 const Login = () => {
     const {loginUser, googleSignIn} = useAuth();
+    const navigate = useNavigate();
+    const location = useLocation();
+    const redirectTo = location.state?.from?.pathname
+        ? `${location.state.from.pathname}${location.state.from.search || ""}${location.state.from.hash || ""}`
+        : "/";
+
+    const finishLogin = (message) => {
+        Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: message,
+            showConfirmButton: false,
+            timer: 1500,
+        });
+        navigate(redirectTo, { replace: true });
+    };
 
     const handleLogin = (e) => {
         e.preventDefault();
         const form = e.target;
         const email = form.email.value;
         const password = form.password.value;
-        console.log(email, password);
         loginUser(email, password)
-        .then(result=>{
-                                      Swal.fire({
-                    position: "top-end",
-                    icon: "success",
-                    title: "Your login sucessfully",
-                    showConfirmButton: false,
-                    timer: 1500,
-                }); 
-            console.log(result.user);
+        .then(() => {
+            finishLogin("Login successful");
         })
-        .catch(error=>console.log(error))
+        .catch(error => {
+            Swal.fire({ icon: "error", title: "Login failed", text: error.message });
+        });
     };
     // google Sign in
     const handleGoogleSignIn = () =>{
         googleSignIn()
-        .then(result=>{
-                            Swal.fire({
-                    position: "top-end",
-                    icon: "success",
-                    title: "Your google login sucessfully",
-                    showConfirmButton: false,
-                    timer: 1500,
-                }); 
-                console.log(result);
-                
+        .then(() => {
+            finishLogin("Google login successful");
         })
-.catch(error=>console.log(error))
+.catch(error => {
+    Swal.fire({ icon: "error", title: "Google sign-in failed", text: error.message });
+});
     }
 
     return (

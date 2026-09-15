@@ -12,7 +12,7 @@ const getOwnerEmail = (food) => {
 const UpdateFood = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { user, authToken } = useAuth();
   const [food, setFood] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
@@ -22,7 +22,10 @@ const UpdateFood = () => {
     const controller = new AbortController();
     const loadFood = async () => {
       try {
-        const response = await fetch(API_URL + "/" + id, { signal: controller.signal });
+        const response = await fetch(API_URL + "/" + id, {
+          signal: controller.signal,
+          headers: authToken ? { Authorization: "Bearer " + authToken } : {},
+        });
         if (!response.ok) throw new Error("Food not found.");
         const data = await response.json();
         if (!controller.signal.aborted) setFood(data);
@@ -34,7 +37,7 @@ const UpdateFood = () => {
     };
     loadFood();
     return () => controller.abort();
-  }, [id]);
+  }, [authToken, id]);
 
   const isOwner = food && getOwnerEmail(food)?.toLowerCase() === user?.email?.toLowerCase();
   const handleSubmit = async (event) => {
@@ -54,7 +57,7 @@ const UpdateFood = () => {
       setIsSaving(true);
       const response = await fetch(API_URL + "/" + id, {
         method: "PATCH",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", ...(authToken ? { Authorization: "Bearer " + authToken } : {}) },
         body: JSON.stringify(updatedFood),
       });
       if (!response.ok) throw new Error("Unable to update food.");

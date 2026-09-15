@@ -5,7 +5,7 @@ import useAuth from "../../Hook/useAuth";
 
 const FoodPurchase = () => {
   const food = useLoaderData();
-  const { user } = useAuth();
+  const { user, authToken } = useAuth();
   const navigate = useNavigate();
   const [quantity, setQuantity] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -13,11 +13,23 @@ const FoodPurchase = () => {
   const foodName = food.foodName || food.name || "Untitled food";
   const availableQuantity = food.quantity ?? food.availableQuantity ?? food.stock ?? food.foodQuantity;
   const buyerName = user?.displayName || "Not provided";
+  const foodOwner = food.addedBy || food.userEmail || food.email;
+  const ownerEmail = typeof foodOwner === "object" ? foodOwner.email : foodOwner;
+  const isUnavailable = Number(availableQuantity) <= 0;
+  const isOwnFood = ownerEmail?.toLowerCase() === user?.email?.toLowerCase();
 
   const handlePurchase = async (event) => {
     event.preventDefault();
     const amount = Number(quantity);
 
+    if (isUnavailable) {
+      Swal.fire({ icon: "info", title: "This food is currently unavailable" });
+      return;
+    }
+    if (isOwnFood) {
+      Swal.fire({ icon: "info", title: "You cannot purchase a food you added" });
+      return;
+    }
     if (!Number.isInteger(amount) || amount < 1) {
       Swal.fire({ icon: "error", title: "Enter a valid quantity" });
       return;
@@ -35,13 +47,15 @@ const FoodPurchase = () => {
       buyerName,
       buyerEmail: user?.email,
       buyingDate: Date.now(),
+      foodImage: food.image,
+      foodOwner,
     };
 
     try {
       setIsSubmitting(true);
       const response = await fetch("http://localhost:3000/purchases", {
         method: "POST",
-        headers: { "content-type": "application/json" },
+        headers: { "content-type": "application/json", ...(authToken ? { Authorization: "Bearer " + authToken } : {}) },
         body: JSON.stringify(purchase),
       });
 
@@ -90,8 +104,10 @@ const FoodPurchase = () => {
             <span className="mb-2 block text-sm font-semibold text-gray-700">Buyer Email</span>
             <input value={user?.email || ""} readOnly className="w-full rounded-lg border border-gray-200 bg-gray-100 px-4 py-3 text-gray-700" />
           </label>
-          <button type="submit" disabled={isSubmitting} className="w-full rounded-lg bg-orange-500 px-5 py-3 font-semibold text-white transition hover:bg-orange-600 disabled:cursor-not-allowed disabled:bg-orange-300">
-            {isSubmitting ? "Placing order..." : "Purchase"}
+          {isUnavailable && <p className="rounded-lg bg-red-50 p-3 text-sm text-red-700">This food is out of stock and cannot be purchased.</p>}
+          {isOwnFood && <p className="rounded-lg bg-red-50 p-3 text-sm text-red-700">You cannot purchase a food item that you added.</p>}
+          <button type="submit" disabled={isSubmitting || isUnavailable || isOwnFood} className="w-full rounded-lg bg-orange-500 px-5 py-3 font-semibold text-white transition hover:bg-orange-600 disabled:cursor-not-allowed disabled:bg-orange-300">
+            {isSubmitting ? "Placing order..." : isUnavailable ? "Out of stock" : isOwnFood ? "Your food item" : "Purchase"}
           </button>
         </form>
       </section>

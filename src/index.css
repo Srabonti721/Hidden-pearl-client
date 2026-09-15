@@ -13,3 +13,20 @@
     text-decoration: underline;
     text-decoration-color: orange;
 }
+
+html[data-theme="dark"] body,
+html[data-theme="dark"] .bg-white,
+html[data-theme="dark"] .bg-orange-50\/40 {
+    background-color: #18212f !important;
+    color: #e5e7eb;
+}
+html[data-theme="dark"] .text-gray-800,
+html[data-theme="dark"] .text-gray-700,
+html[data-theme="dark"] .text-gray-600,
+html[data-theme="dark"] .text-gray-500 {
+    color: #d1d5db !important;
+}
+html[data-theme="dark"] .bg-gray-100,
+html[data-theme="dark"] .bg-orange-50 {
+    background-color: #263447 !important;
+}

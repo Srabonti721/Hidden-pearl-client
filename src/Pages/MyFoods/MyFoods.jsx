@@ -11,7 +11,7 @@ const getFoodName = (food) => food.foodName || food.name || "Untitled food";
 const getQuantity = (food) => food.quantity ?? food.availableQuantity ?? food.stock ?? food.foodQuantity ?? 0;
 
 const MyFoods = () => {
-  const { user } = useAuth();
+  const { user, authToken } = useAuth();
   const [foods, setFoods] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
@@ -22,7 +22,10 @@ const MyFoods = () => {
       try {
         setIsLoading(true);
         setError("");
-        const response = await fetch(API_URL, { signal: controller.signal });
+        const response = await fetch(API_URL, {
+          signal: controller.signal,
+          headers: authToken ? { Authorization: "Bearer " + authToken } : {},
+        });
         if (!response.ok) throw new Error("Unable to load foods.");
         const data = await response.json();
         if (!controller.signal.aborted) setFoods(Array.isArray(data) ? data : []);
@@ -34,7 +37,7 @@ const MyFoods = () => {
     };
     if (user?.email) loadMyFoods();
     return () => controller.abort();
-  }, [user?.email]);
+  }, [authToken, user?.email]);
 
   const myFoods = useMemo(
     () => foods.filter((food) => getOwnerEmail(food)?.toLowerCase() === user?.email?.toLowerCase()),

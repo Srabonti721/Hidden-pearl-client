@@ -14,7 +14,6 @@ const Home = () => {
             <TopFoods foodsPromice={foodsPromice} />
             <OurStory/>
             <RestaurantStats/>
-
         </div>
     );
 };

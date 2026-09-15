@@ -17,9 +17,10 @@ const provider = new GoogleAuthProvider();
 const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [authToken, setAuthToken] = useState(() => localStorage.getItem("access-token"));
 
     const createUser = (email, password) => {
-        setLoading(false);
+        setLoading(true);
         return createUserWithEmailAndPassword(auth, email, password);
     };
     const loginUser = (email, password) =>{
@@ -44,10 +45,22 @@ const AuthProvider = ({ children }) => {
     }
 
     useEffect(() => {
-        const unSubscribe = onAuthStateChanged(auth, (currentUser) => {
+        const unSubscribe = onAuthStateChanged(auth, async (currentUser) => {
             setUser(currentUser);
+            if (currentUser) {
+                try {
+                    const token = await currentUser.getIdToken();
+                    localStorage.setItem("access-token", token);
+                    setAuthToken(token);
+                } catch {
+                    localStorage.removeItem("access-token");
+                    setAuthToken(null);
+                }
+            } else {
+                localStorage.removeItem("access-token");
+                setAuthToken(null);
+            }
             setLoading(false);
-            console.log("user in the auth satate Change", currentUser);
         });
         return () => {
             unSubscribe();
@@ -57,6 +70,7 @@ const AuthProvider = ({ children }) => {
     const userInfo = {
         user,
         loading,
+        authToken,
         createUser,
         updateUserProfile,
         loginUser,

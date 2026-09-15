@@ -2,14 +2,14 @@ import { Navigate, useLocation } from "react-router";
 import useAuth from "../../Hook/useAuth";
 
 const PrivateRoute = ({ children }) => {
-  const { user, loading } = useAuth();
+  const { user, loading, authToken } = useAuth();
   const location = useLocation();
 
   if (loading) {
-    return <p className="py-16 text-center text-gray-500">Checking your account...</p>;
+    return <span className="loading loading-dots loading-xl"></span>;
   }
 
-  if (!user) {
+  if (!user || !authToken) {
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
