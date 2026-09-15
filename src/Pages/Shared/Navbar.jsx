@@ -33,6 +33,22 @@ const Navbar = () => {
             >
                 Gallery
             </NavLink>
+            {user && (
+                <NavLink
+                    to="/my-foods"
+                    className="ml-2 text-xl hover:text-orange-300 "
+                >
+                    My Foods
+                </NavLink>
+            )}
+            {user && (
+                <NavLink
+                    to="/add-food"
+                    className="ml-2 text-xl hover:text-orange-300 "
+                >
+                    Add Food
+                </NavLink>
+            )}
         </>
     );
     return (
