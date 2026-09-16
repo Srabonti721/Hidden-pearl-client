@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { useLoaderData, useNavigate } from "react-router";
 import Swal from "sweetalert2";
-import axios from "axios";
+import apiClient from "../../api/apiClient";
 import useAuth from "../../Hook/useAuth";
 
 const FoodPurchase = () => {
   const food = useLoaderData();
-  const { user, authToken } = useAuth();
+  const { user } = useAuth();
   const navigate = useNavigate();
   const [quantity, setQuantity] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -54,9 +54,7 @@ const FoodPurchase = () => {
 
     try {
       setIsSubmitting(true);
-      await axios.post("http://localhost:3000/purchases", purchase, {
-        headers: authToken ? { Authorization: "Bearer " + authToken } : {},
-      });
+      await apiClient.post("/purchases", purchase);
 
       await Swal.fire({
         position: "top-end",

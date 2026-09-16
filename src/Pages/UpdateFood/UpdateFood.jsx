@@ -2,9 +2,9 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router";
 import Swal from "sweetalert2";
 import useAuth from "../../Hook/useAuth";
-import axios from "axios";
+import apiClient from "../../api/apiClient";
 
-const API_URL = "http://localhost:3000/foods";
+const API_URL = "/foods";
 const getOwnerEmail = (food) => {
   const owner = food.addedBy || food.userEmail || food.email || food.addedByEmail;
   return typeof owner === "object" ? owner.email : owner;
@@ -13,7 +13,7 @@ const getOwnerEmail = (food) => {
 const UpdateFood = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { user, authToken } = useAuth();
+  const { user } = useAuth();
   const [food, setFood] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
@@ -23,9 +23,8 @@ const UpdateFood = () => {
     const controller = new AbortController();
     const loadFood = async () => {
       try {
-        const { data } = await axios.get(API_URL + "/" + id, {
+        const { data } = await apiClient.get(API_URL + "/" + id, {
           signal: controller.signal,
-          headers: authToken ? { Authorization: "Bearer " + authToken } : {},
         });
         if (!controller.signal.aborted) setFood(data);
       } catch (requestError) {
@@ -36,7 +35,7 @@ const UpdateFood = () => {
     };
     loadFood();
     return () => controller.abort();
-  }, [authToken, id]);
+  }, [id]);
 
   const isOwner = food && getOwnerEmail(food)?.toLowerCase() === user?.email?.toLowerCase();
   const handleSubmit = async (event) => {
@@ -54,9 +53,7 @@ const UpdateFood = () => {
     };
     try {
       setIsSaving(true);
-      await axios.patch(API_URL + "/" + id, updatedFood, {
-        headers: authToken ? { Authorization: "Bearer " + authToken } : {},
-      });
+      await apiClient.patch(API_URL + "/" + id, updatedFood);
       await Swal.fire({ title: "Food updated", text: "Your changes have been saved.", icon: "success" });
       navigate("/my-foods");
     } catch {

@@ -2,9 +2,9 @@ import { useEffect, useMemo, useState } from "react";
 import moment from "moment";
 import Swal from "sweetalert2";
 import useAuth from "../../Hook/useAuth";
-import axios from "axios";
+import apiClient from "../../api/apiClient";
 
-const API_URL = "http://localhost:3000/purchases";
+const API_URL = "/purchases";
 const getBuyerEmail = (order) => order.buyerEmail || order.email || order.userEmail;
 const getOwner = (order) => {
   const owner = order.foodOwner || order.addedBy || order.ownerEmail;
@@ -12,7 +12,7 @@ const getOwner = (order) => {
 };
 
 const MyOrders = () => {
-  const { user, authToken } = useAuth();
+  const { user } = useAuth();
   const [orders, setOrders] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
@@ -22,9 +22,9 @@ const MyOrders = () => {
     const loadOrders = async () => {
       try {
         setIsLoading(true);
-        const { data } = await axios.get(API_URL, {
+        const { data } = await apiClient.get(API_URL, {
           signal: controller.signal,
-          headers: authToken ? { Authorization: "Bearer " + authToken } : {},
+          params: { email: user.email },
         });
         if (!controller.signal.aborted) setOrders(Array.isArray(data) ? data : []);
       } catch (requestError) {
@@ -35,7 +35,7 @@ const MyOrders = () => {
     };
     if (user?.email) loadOrders();
     return () => controller.abort();
-  }, [authToken, user?.email]);
+  }, [user?.email]);
 
   const myOrders = useMemo(
     () => orders.filter((order) => getBuyerEmail(order)?.toLowerCase() === user?.email?.toLowerCase()),
@@ -53,9 +53,7 @@ const MyOrders = () => {
     });
     if (!confirmation.isConfirmed) return;
     try {
-      await axios.delete(API_URL + "/" + orderId, {
-        headers: authToken ? { Authorization: "Bearer " + authToken } : {},
-      });
+      await apiClient.delete(API_URL + "/" + orderId);
       setOrders((currentOrders) => currentOrders.filter((order) => order._id !== orderId));
       Swal.fire({ icon: "success", title: "Order deleted", timer: 1500, showConfirmButton: false });
     } catch {

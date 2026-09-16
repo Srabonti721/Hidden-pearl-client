@@ -9,6 +9,7 @@ import {
 } from "firebase/auth";
 import { createContext, useEffect, useState } from "react";
 import { auth } from "../firebase/firabase.init";
+import { clearAccessToken, createAccessToken } from "../api/jwt";
 
 export const AuthContext = createContext(null);
 
@@ -17,7 +18,6 @@ const provider = new GoogleAuthProvider();
 const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
-    const [authToken, setAuthToken] = useState(() => localStorage.getItem("access-token"));
 
     const createUser = (email, password) => {
         setLoading(true);
@@ -46,20 +46,12 @@ const AuthProvider = ({ children }) => {
 
     useEffect(() => {
         const unSubscribe = onAuthStateChanged(auth, async (currentUser) => {
-            setUser(currentUser);
             if (currentUser) {
-                try {
-                    const token = await currentUser.getIdToken();
-                    localStorage.setItem("access-token", token);
-                    setAuthToken(token);
-                } catch {
-                    localStorage.removeItem("access-token");
-                    setAuthToken(null);
-                }
+                await createAccessToken(currentUser.email);
             } else {
-                localStorage.removeItem("access-token");
-                setAuthToken(null);
+                clearAccessToken();
             }
+            setUser(currentUser);
             setLoading(false);
         });
         return () => {
@@ -70,7 +62,6 @@ const AuthProvider = ({ children }) => {
     const userInfo = {
         user,
         loading,
-        authToken,
         createUser,
         updateUserProfile,
         loginUser,

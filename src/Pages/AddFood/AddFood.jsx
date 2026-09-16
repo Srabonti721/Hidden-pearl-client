@@ -1,11 +1,11 @@
 import Swal from "sweetalert2";
 import useAuth from "../../Hook/useAuth";
-import axios from "axios";
+import apiClient from "../../api/apiClient";
 
-const API_URL = "http://localhost:3000/foods";
+const API_URL = "/foods";
 
 const AddFood = () => {
-  const { user, authToken } = useAuth();
+  const { user } = useAuth();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -28,9 +28,7 @@ const AddFood = () => {
     };
 
     try {
-      await axios.post(API_URL, food, {
-        headers: authToken ? { Authorization: "Bearer " + authToken } : {},
-      });
+      await apiClient.post(API_URL, food);
 
       event.currentTarget.reset();
       await Swal.fire({

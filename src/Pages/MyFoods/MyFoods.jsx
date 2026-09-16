@@ -1,9 +1,9 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router";
 import useAuth from "../../Hook/useAuth";
-import axios from "axios";
+import apiClient from "../../api/apiClient";
 
-const API_URL = "http://localhost:3000/foods";
+const API_URL = "/foods";
 const getOwnerEmail = (food) => {
   const owner = food.addedBy || food.userEmail || food.email || food.addedByEmail;
   return typeof owner === "object" ? owner.email : owner;
@@ -12,7 +12,7 @@ const getFoodName = (food) => food.foodName || food.name || "Untitled food";
 const getQuantity = (food) => food.quantity ?? food.availableQuantity ?? food.stock ?? food.foodQuantity ?? 0;
 
 const MyFoods = () => {
-  const { user, authToken } = useAuth();
+  const { user } = useAuth();
   const [foods, setFoods] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
@@ -23,9 +23,9 @@ const MyFoods = () => {
       try {
         setIsLoading(true);
         setError("");
-        const { data } = await axios.get(API_URL, {
+        const { data } = await apiClient.get(API_URL, {
           signal: controller.signal,
-          headers: authToken ? { Authorization: "Bearer " + authToken } : {},
+          params: { email: user.email },
         });
         if (!controller.signal.aborted) setFoods(Array.isArray(data) ? data : []);
       } catch (requestError) {
@@ -36,7 +36,7 @@ const MyFoods = () => {
     };
     if (user?.email) loadMyFoods();
     return () => controller.abort();
-  }, [authToken, user?.email]);
+  }, [user?.email]);
 
   const myFoods = useMemo(
     () => foods.filter((food) => getOwnerEmail(food)?.toLowerCase() === user?.email?.toLowerCase()),
