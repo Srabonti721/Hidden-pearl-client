@@ -6,7 +6,7 @@ const TopFoods = ({ foodsPromice }) => {
   const [showAll, setShowAll] = useState(false);
 
   const sortedFoods = [...foods].sort(
-    (a, b) => b.purchaseCount - a.purchaseCount
+    (a, b) => Number(b.purchaseCount ?? 0) - Number(a.purchaseCount ?? 0)
   );
 
   const displayFoods = showAll

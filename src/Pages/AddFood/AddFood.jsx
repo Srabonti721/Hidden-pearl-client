@@ -16,6 +16,9 @@ const AddFood = () => {
       category: form.get("category").trim(),
       quantity: Number(form.get("quantity")),
       price: Number(form.get("price")),
+      // New foods have not been purchased yet. Keeping this value explicit lets
+      // the home page rank every food consistently by its sales total.
+      purchaseCount: 0,
       foodOrigin: form.get("foodOrigin").trim(),
       description: form.get("description").trim(),
       addedBy: {
