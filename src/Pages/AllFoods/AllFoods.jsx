@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router";
+import axios from "axios";
 
 const API_URL = "http://localhost:3000/foods";
 
@@ -19,12 +20,10 @@ const AllFoods = () => {
     const loadFoods = async () => {
       try {
         setIsLoading(true);
-        const response = await fetch(API_URL, { signal: controller.signal });
-        if (!response.ok) throw new Error("Unable to load foods.");
-        const data = await response.json();
+        const { data } = await axios.get(API_URL, { signal: controller.signal });
         setFoods(Array.isArray(data) ? data : []);
       } catch (requestError) {
-        if (requestError.name !== "AbortError") {
+        if (requestError.name !== "AbortError" && requestError.code !== "ERR_CANCELED") {
           setError("We couldn't load the menu right now. Please try again.");
         }
       } finally {

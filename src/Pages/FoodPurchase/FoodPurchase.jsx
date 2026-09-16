@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useLoaderData, useNavigate } from "react-router";
 import Swal from "sweetalert2";
+import axios from "axios";
 import useAuth from "../../Hook/useAuth";
 
 const FoodPurchase = () => {
@@ -53,13 +54,9 @@ const FoodPurchase = () => {
 
     try {
       setIsSubmitting(true);
-      const response = await fetch("http://localhost:3000/purchases", {
-        method: "POST",
-        headers: { "content-type": "application/json", ...(authToken ? { Authorization: "Bearer " + authToken } : {}) },
-        body: JSON.stringify(purchase),
+      await axios.post("http://localhost:3000/purchases", purchase, {
+        headers: authToken ? { Authorization: "Bearer " + authToken } : {},
       });
-
-      if (!response.ok) throw new Error("Purchase could not be saved.");
 
       await Swal.fire({
         position: "top-end",
@@ -69,8 +66,14 @@ const FoodPurchase = () => {
         timer: 1800,
       });
       navigate(`/foods/${food._id}`);
-    } catch {
-      Swal.fire({ icon: "error", title: "Order failed", text: "Please try again." });
+    } catch (error) {
+      console.error("Purchase request failed:", error);
+      const serverMessage = error.response?.data?.message || error.response?.data?.error;
+      Swal.fire({
+        icon: "error",
+        title: "Order failed",
+        text: serverMessage || error.message || "Please try again.",
+      });
     } finally {
       setIsSubmitting(false);
     }

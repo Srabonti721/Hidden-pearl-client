@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import moment from "moment";
 import Swal from "sweetalert2";
 import useAuth from "../../Hook/useAuth";
+import axios from "axios";
 
 const API_URL = "http://localhost:3000/purchases";
 const getBuyerEmail = (order) => order.buyerEmail || order.email || order.userEmail;
@@ -21,15 +22,13 @@ const MyOrders = () => {
     const loadOrders = async () => {
       try {
         setIsLoading(true);
-        const response = await fetch(API_URL, {
+        const { data } = await axios.get(API_URL, {
           signal: controller.signal,
           headers: authToken ? { Authorization: "Bearer " + authToken } : {},
         });
-        if (!response.ok) throw new Error("Unable to load orders.");
-        const data = await response.json();
         if (!controller.signal.aborted) setOrders(Array.isArray(data) ? data : []);
       } catch (requestError) {
-        if (requestError.name !== "AbortError") setError("We couldn't load your orders right now.");
+        if (requestError.name !== "AbortError" && requestError.code !== "ERR_CANCELED") setError("We couldn't load your orders right now.");
       } finally {
         if (!controller.signal.aborted) setIsLoading(false);
       }
@@ -54,11 +53,9 @@ const MyOrders = () => {
     });
     if (!confirmation.isConfirmed) return;
     try {
-      const response = await fetch(API_URL + "/" + orderId, {
-        method: "DELETE",
+      await axios.delete(API_URL + "/" + orderId, {
         headers: authToken ? { Authorization: "Bearer " + authToken } : {},
       });
-      if (!response.ok) throw new Error("Unable to delete order.");
       setOrders((currentOrders) => currentOrders.filter((order) => order._id !== orderId));
       Swal.fire({ icon: "success", title: "Order deleted", timer: 1500, showConfirmButton: false });
     } catch {

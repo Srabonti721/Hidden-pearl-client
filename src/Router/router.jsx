@@ -12,6 +12,7 @@ import MyFoods from "../Pages/MyFoods/MyFoods";
 import UpdateFood from "../Pages/UpdateFood/UpdateFood";
 import AddFood from "../Pages/AddFood/AddFood";
 import MyOrders from "../Pages/MyOrders/MyOrders";
+import axios from "axios";
 
 const router = createBrowserRouter([
     {
@@ -30,11 +31,11 @@ const router = createBrowserRouter([
                 path: "foods/:id",
                 Component: SingleFood,
                 loader: ({ params }) =>
-                    fetch(`http://localhost:3000/foods/${params.id}`),
+                    axios.get(`http://localhost:3000/foods/${params.id}`).then((response) => response.data),
             },
             {
                 path: "/food-purchase/:id",
-                loader: ({ params }) => fetch(`http://localhost:3000/foods/${params.id}`),
+                loader: ({ params }) => axios.get(`http://localhost:3000/foods/${params.id}`).then((response) => response.data),
                 element: (
                     <PrivateRoute>
                         <FoodPurchase />

@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router";
 import useAuth from "../../Hook/useAuth";
+import axios from "axios";
 
 const API_URL = "http://localhost:3000/foods";
 const getOwnerEmail = (food) => {
@@ -22,15 +23,13 @@ const MyFoods = () => {
       try {
         setIsLoading(true);
         setError("");
-        const response = await fetch(API_URL, {
+        const { data } = await axios.get(API_URL, {
           signal: controller.signal,
           headers: authToken ? { Authorization: "Bearer " + authToken } : {},
         });
-        if (!response.ok) throw new Error("Unable to load foods.");
-        const data = await response.json();
         if (!controller.signal.aborted) setFoods(Array.isArray(data) ? data : []);
       } catch (requestError) {
-        if (requestError.name !== "AbortError") setError("We couldn't load your foods right now. Please try again.");
+        if (requestError.name !== "AbortError" && requestError.code !== "ERR_CANCELED") setError("We couldn't load your foods right now. Please try again.");
       } finally {
         if (!controller.signal.aborted) setIsLoading(false);
       }

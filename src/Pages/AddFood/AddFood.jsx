@@ -1,5 +1,6 @@
 import Swal from "sweetalert2";
 import useAuth from "../../Hook/useAuth";
+import axios from "axios";
 
 const API_URL = "http://localhost:3000/foods";
 
@@ -24,12 +25,9 @@ const AddFood = () => {
     };
 
     try {
-      const response = await fetch(API_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json", ...(authToken ? { Authorization: "Bearer " + authToken } : {}) },
-        body: JSON.stringify(food),
+      await axios.post(API_URL, food, {
+        headers: authToken ? { Authorization: "Bearer " + authToken } : {},
       });
-      if (!response.ok) throw new Error("Unable to add food.");
 
       event.currentTarget.reset();
       await Swal.fire({
