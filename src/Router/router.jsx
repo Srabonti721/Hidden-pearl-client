@@ -13,10 +13,12 @@ import UpdateFood from "../Pages/UpdateFood/UpdateFood";
 import AddFood from "../Pages/AddFood/AddFood";
 import MyOrders from "../Pages/MyOrders/MyOrders";
 import axios from "axios";
+import ErrorPages from "../Pages/Errorpages/ErrorPages";
 
 const router = createBrowserRouter([
     {
         path: "/",
+        errorElement:<ErrorPages></ErrorPages>,
         Component: MainLayout,
         children: [
             {
