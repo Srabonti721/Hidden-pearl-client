@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router";
 import axios from "axios";
+import { Helmet } from "react-helmet-async";
 
 const API_URL = "http://localhost:3000/foods";
 
@@ -48,6 +49,9 @@ const AllFoods = () => {
 
   return (
     <main className="min-h-screen bg-orange-50/40 pb-16">
+      <Helmet>
+        <title>All Foods - Hidden Pearl</title>
+      </Helmet>
       <section className="bg-orange-500 px-4 py-16 text-center text-white sm:py-20">
         <p className="mb-2 text-sm font-semibold uppercase tracking-[0.25em] text-orange-100">
           Hidden Pearl menu

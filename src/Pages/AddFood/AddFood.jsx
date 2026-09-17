@@ -1,6 +1,7 @@
 import Swal from "sweetalert2";
 import useAuth from "../../Hook/useAuth";
 import apiClient from "../../api/apiClient";
+import { Helmet } from "react-helmet-async";
 
 const API_URL = "/foods";
 
@@ -49,6 +50,9 @@ const AddFood = () => {
 
   return (
     <main className="min-h-screen bg-orange-50/40 px-4 py-10 sm:px-6 lg:px-8">
+      <Helmet>
+         <title>Add Food - Hidden Pearl</title>
+      </Helmet>
       <form onSubmit={handleSubmit} className="mx-auto max-w-3xl rounded-2xl bg-white p-6 shadow-lg sm:p-10">
         <p className="text-sm font-semibold uppercase tracking-[0.2em] text-orange-500">Share your favorite</p>
         <h1 className="mt-2 text-3xl font-bold text-gray-800">Add Food</h1>

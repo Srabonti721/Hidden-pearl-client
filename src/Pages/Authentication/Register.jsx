@@ -4,6 +4,7 @@ import { Link } from "react-router";
 import Swal from "sweetalert2";
 import registerAnimation from "../../assets/lotties/Register (1).json";
 import { AuthContext } from "../../context/AuthProvider";
+import { Helmet } from "react-helmet-async";
 
 const Register = () => {
     const [password, setPassword] = useState("");
@@ -46,6 +47,9 @@ const Register = () => {
 
     return (
         <div className="min-h-screen from-purple-50 via-white to-blue-50 flex items-center justify-center px-4 py-10">
+            <Helmet>
+                 <title>Register - Hidden Pearl</title>
+            </Helmet>
             <div className="w-full max-w-5xl bg-white rounded-3xl shadow-xl overflow-hidden">
                 <div className="grid md:grid-cols-2">
                     {/* Lottie Section */}

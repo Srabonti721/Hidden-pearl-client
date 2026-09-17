@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate } from "react-router";
 import loginAnimation from "../../assets/lotties/Confetti.json";
 import useAuth from "../../Hook/useAuth";
 import Swal from "sweetalert2";
+import { Helmet } from "react-helmet-async";
 
 const Login = () => {
     const {loginUser, googleSignIn} = useAuth();
@@ -49,6 +50,9 @@ const Login = () => {
 
     return (
         <div className="min-h-screen  from-blue-50 via-white to-purple-50 flex items-center justify-center px-4 py-10">
+            <Helmet>
+                 <title>Login - Hidden Pearl</title>
+            </Helmet>
             <div className="w-full max-w-5xl bg-white rounded-3xl shadow-xl overflow-hidden">
                 <div className="grid md:grid-cols-2">
                     {/* Left - Lottie */}

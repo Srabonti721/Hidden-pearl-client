@@ -3,6 +3,7 @@ import moment from "moment";
 import Swal from "sweetalert2";
 import useAuth from "../../Hook/useAuth";
 import apiClient from "../../api/apiClient";
+import { Helmet } from "react-helmet-async";
 
 const API_URL = "/purchases";
 const getBuyerEmail = (order) => order.buyerEmail || order.email || order.userEmail;
@@ -64,6 +65,9 @@ const MyOrders = () => {
 
   return (
     <main className="min-h-screen bg-orange-50/40 pb-16">
+      <Helmet>
+         <title>My Orders - Hidden Pearl</title>
+      </Helmet>
       <section className="bg-orange-500 px-4 py-16 text-center text-white sm:py-20">
         <p className="mb-2 text-sm font-semibold uppercase tracking-[0.25em] text-orange-100">Your purchases</p>
         <h1 className="text-4xl font-bold sm:text-5xl">My Orders</h1>

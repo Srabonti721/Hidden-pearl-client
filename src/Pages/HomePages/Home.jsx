@@ -1,3 +1,4 @@
+import { Helmet } from "react-helmet-async";
 import Banner from "./Banner";
 import OurStory from "./OurStory";
 import RestaurantStats from "./RestaurantStats";
@@ -9,6 +10,9 @@ const foodsPromice = axios.get("http://localhost:3000/foods").then((response) =>
 const Home = () => {
     return (
         <div>
+            <Helmet>
+                <title>Home - Hidden Pearl</title>
+            </Helmet>
             <Banner />
             <TopFoods foodsPromice={foodsPromice} />
             <OurStory/>
