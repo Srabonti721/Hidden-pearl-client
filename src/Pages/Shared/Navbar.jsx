@@ -19,25 +19,25 @@ const Navbar = () => {
     };
     const links = (
         <>
-            <NavLink to={"/"} className="ml-2 text-xl hover:text-orange-300 ">
+            <NavLink to={"/"} className="ml-4 text-xl hover:text-orange-300 ">
                 Home
             </NavLink>
             <NavLink
                 to={"/allFoods"}
-                className="ml-2 text-xl hover:text-orange-300 "
+                className="ml-4 text-xl hover:text-orange-300 "
             >
                 All Foods
             </NavLink>
             <NavLink
                 to={"/gallery"}
-                className="ml-2 text-xl hover:text-orange-300 "
+                className="ml-4 text-xl hover:text-orange-300 "
             >
                 Gallery
             </NavLink>
             {user && (
                 <NavLink
                     to="/my-foods"
-                    className="ml-2 text-xl hover:text-orange-300 "
+                    className="ml-4 text-xl hover:text-orange-300 "
                 >
                     My Foods
                 </NavLink>
@@ -45,7 +45,7 @@ const Navbar = () => {
             {user && (
                 <NavLink
                     to="/add-food"
-                    className="ml-2 text-xl hover:text-orange-300 "
+                    className="ml-4 text-xl hover:text-orange-300 "
                 >
                     Add Food
                 </NavLink>
@@ -61,7 +61,7 @@ const Navbar = () => {
         </>
     );
     return (
-        <div className="navbar bg-white shadow-sm">
+        <div className="navbar bg-white shadow-sm  lg:px-6">
             <div className="navbar-start">
                 <div className="dropdown">
                     <div
@@ -95,11 +95,11 @@ const Navbar = () => {
                 </div>
 
                 <img
-                    className="w-10"
+                    className="w-10 hidden sm:block  lg:block "
                     src="https://img.icons8.com/?size=64&id=BZObKCd3ZSVS&format=png"
                     alt=""
                 />
-                <a className="text-3xl font-bold">Hidden Pearl</a>
+                <a className="lg:text-3xl font-bold text-xl">Hidden Pearl</a>
             </div>
             <div className="navbar-center hidden lg:flex">
                 <ul className="menu menu-horizontal px-1">{links}</ul>
@@ -112,7 +112,7 @@ const Navbar = () => {
                             className="avatar  tooltip tooltip-bottom"
                             data-tip={user?.email}
                         >
-                            <div className="w-10 rounded-full ">
+                            <div className=" w-8 lg:w-10 rounded-full ">
                                 <img
                                     src={`${user ? user?.photoURL : userIcon}`}
                                 />

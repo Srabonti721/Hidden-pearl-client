@@ -38,7 +38,7 @@ const Gallery = () => {
         <h1 className="text-4xl font-bold sm:text-5xl">Gallery</h1>
       </section>
 
-      <section className="mx-auto max-w-7xl px-4 pt-12 sm:px-6 lg:px-8">
+      <section className="mx-auto px-4 pt-12 sm:px-6 lg:px-8">
         <p className="mx-auto mb-8 max-w-2xl text-center text-gray-600">A taste of the dishes, ingredients, and warm moments from Hidden Pearl. Select an image to view it in full.</p>
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 sm:gap-5">
           {galleryImages.map((image, index) => (

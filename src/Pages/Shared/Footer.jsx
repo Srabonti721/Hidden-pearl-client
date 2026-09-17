@@ -14,7 +14,7 @@ const Footer = ({ foodPromice }) => {
     return (
         <>
             <div
-                className="hero h-96 mt-10"
+                className="hero mt-10"
                 style={{
                     backgroundImage:
                         "url('https://i.ibb.co.com/zVwMtMHN/footer.jpg')",
@@ -63,7 +63,7 @@ const Footer = ({ foodPromice }) => {
                                         key={index}
                                         className="hover:text-orange-400 flex items-center gap-4"
                                     >
-                                        <FaGreaterThan /> {food.name}
+                                        <FaGreaterThan /> {food.foodName} {food.name}
                                     </a>
                                 </>
                             ))}
@@ -83,7 +83,7 @@ const Footer = ({ foodPromice }) => {
                                         alt=""
                                     />
                                     <div className="hover:text-orange-400">
-                                        <h2>{food.name}</h2>
+                                        <h2>{food.foodName}</h2>
                                         <p>৳ {food.price}</p>
                                     </div>
                                 </div>
@@ -91,15 +91,16 @@ const Footer = ({ foodPromice }) => {
                         ))}
                     </nav>
                 </div>
+
             </div>
-            <footer className="footer sm:footer-horizontal bg-neutral text-neutral-content items-center p-4">
+                            <footer className="footer sm:footer-horizontal bg-neutral text-neutral-content pt-10 items-center p-4">
                 <aside className="grid-flow-col items-center">
                     <p>
                         Copyright © {new Date().getFullYear()} - All right
                         reserved
                     </p>
                 </aside>
-                <nav className="grid-flow-col gap-10 md:place-self-center md:justify-self-end">
+                <nav className="grid-flow-col  gap-4 lg:gap-10 md:place-self-center md:justify-self-end">
                     <a className="hover:text-orange-400">Terms & Conditions</a>
                     <a className="hover:text-orange-400">Refund Policy</a>
                     <a className="hover:text-orange-400">Support</a>
