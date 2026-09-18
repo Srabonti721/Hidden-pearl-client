@@ -1,30 +1,31 @@
 import { GiForkKnifeSpoon } from "react-icons/gi";
 import { PiChefHatLight } from "react-icons/pi";
+import chefImg from "../../assets/chef.webp"
 import { TbGlass } from "react-icons/tb";
 
 const OurStory = () => {
     return (
         <section className="py-20 bg-[#fffdf8]">
-            <div className="mx-auto grid max-w-6xl items-center gap-12 px-5 md:grid-cols-2">
+            <div className="mx-auto grid max-w-6xl items-center gap-6 lg:gap-12 px-5 md:grid-cols-2">
                 {/* Images */}
-                <div className="relative min-h-[500px] mr-10">
+                <div className="relative min-h-[500px] mr-5 lg:mr-10">
                     {/* Food Image */}
                     <img
                         src="https://i.ibb.co.com/fdf61JSF/Fast-Food.jpg"
                         alt="Delicious food"
-                        className="absolute left-0 top-10 h-[380px] w-[65%] rounded-lg object-cover shadow-lg"
+                        className="absolute left-0 top-5 lg:top-10 h-[250px] lg:h-[380px] w-[65%] rounded-lg object-cover shadow-lg"
                     />
 
                     {/* Restaurant Image */}
                     <img
-                        src="https://i.ibb.co.com/7JM1tShg/chef.jpg"
+                        src={chefImg}
                         alt="Restaurant"
-                        className="absolute -right-10 top-28 h-[380px] w-[60%] rounded-lg object-cover shadow-xl"
+                        className="absolute right-5 lg:-right-10 top-18 lg:top-28 h-[250px] lg:h-[380px]  w-[60%] rounded-lg object-cover shadow-xl"
                     />
                 </div>
 
                 {/* Text */}
-                <div>
+                <div className="-mt-10">
                     <h2 className="mb-5 text-4xl font-bold text-gray-900 md:text-5xl">
                         Discover Our{" "}
                         <span className="text-orange-400">Story</span>
@@ -41,7 +42,7 @@ const OurStory = () => {
                         should be fresh, flavorful, and made with care.
                     </p>
 
-                    <div className="mb-7 flex gap-8">
+                    <div className="mb-7 grid grid-cols-2 lg:grid-cols-3 gap-8">
                         <div className="flex gap-2 items-center">
                             <TbGlass style={{ color: "orange" }} size={50} />
                             <div>

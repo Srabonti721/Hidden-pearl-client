@@ -5,6 +5,7 @@ import { Link } from "react-router";
 
 import "swiper/css";
 import "swiper/css/pagination";
+import { FaArrowLeftLong, FaArrowRightLong } from "react-icons/fa6";
 
 const Banner = () => {
   const slides = [
@@ -99,7 +100,7 @@ const Banner = () => {
                     to="/allFoods"
                     className="hover:bg-white hover:text-orange-400 btn border-none text-xl p-8 bg-orange-400 text-white rounded-full"
                   >
-                    Explore All Foods
+                     Explore All Foods <FaArrowRightLong size={24}  />
                   </Link>
                 </motion.div>
 

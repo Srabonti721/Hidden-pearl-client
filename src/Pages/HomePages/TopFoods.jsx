@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import apiClient from "../../api/apiClient";
 import TopFoodCard from "./TopFoodCard";
+import { FaArrowRightLong } from "react-icons/fa6";
 
 const TopFoods = () => {
     const [foods, setFoods] = useState([]);
@@ -44,9 +45,9 @@ const TopFoods = () => {
                 <div className="text-center mt-10">
                     <button
                         onClick={() => setShowAll(true)}
-                        className="px-6 py-3 bg-orange-500 text-white rounded-lg hover:bg-orange-600"
+                        className="px-6 btn text-xl py-3 bg-orange-500 text-white rounded-lg hover:bg-orange-600"
                     >
-                        More Foods
+                        More Foods <FaArrowRightLong size={20}  />
                     </button>
                 </div>
             )}
