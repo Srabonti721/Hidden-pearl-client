@@ -1,6 +1,6 @@
 import { Lottie } from "lottie-react";
 import { use, useState } from "react";
-import { Link } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import Swal from "sweetalert2";
 import registerAnimation from "../../assets/lotties/Register (1).json";
 import { AuthContext } from "../../context/AuthProvider";
@@ -9,6 +9,12 @@ import { Helmet } from "react-helmet-async";
 const Register = () => {
     const [password, setPassword] = useState("");
     const { createUser, updateUserProfile } = use(AuthContext);
+      const navigate = useNavigate();
+    const location = useLocation();
+    const redirectTo = location.state?.from?.pathname
+        ? `${location.state.from.pathname}${location.state.from.search || ""}${location.state.from.hash || ""}`
+        : "/";
+
 
     const handleRegister = (e) => {
         e.preventDefault();
@@ -17,7 +23,6 @@ const Register = () => {
         const email = form.email.value;
         const photoURL = form.photoURL.value;
         const password = form.password.value;
-        console.log(name, email, photoURL, password);
         if (password.length < 6) {
             return setPassword("Password must be at least 6 characters");
         }
@@ -37,8 +42,8 @@ const Register = () => {
                     showConfirmButton: false,
                     timer: 1500,
                 });
+                navigate(redirectTo, { replace: true });
                 updateUserProfile(name, photoURL);
-                console.log("After update:", name, photoURL);
             })
             .catch((error) => {
                 console.log(error);

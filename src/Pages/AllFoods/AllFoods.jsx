@@ -1,9 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router";
-import axios from "axios";
 import { Helmet } from "react-helmet-async";
+import apiClient from "../../api/apiClient";
 
-const API_URL = "http://localhost:3000/foods";
 
 const getFoodName = (food) => food.foodName || food.name || "Untitled food";
 const getQuantity = (food) =>
@@ -21,7 +20,7 @@ const AllFoods = () => {
     const loadFoods = async () => {
       try {
         setIsLoading(true);
-        const { data } = await axios.get(API_URL, { signal: controller.signal });
+        const { data } = await apiClient.get("/foods");
         setFoods(Array.isArray(data) ? data : []);
       } catch (requestError) {
         if (requestError.name !== "AbortError" && requestError.code !== "ERR_CANCELED") {

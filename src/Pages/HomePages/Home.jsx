@@ -3,9 +3,6 @@ import Banner from "./Banner";
 import OurStory from "./OurStory";
 import RestaurantStats from "./RestaurantStats";
 import TopFoods from "./TopFoods";
-import axios from "axios";
-
-const foodsPromice = axios.get("http://localhost:3000/foods").then((response) => response.data);
 
 const Home = () => {
     return (
@@ -14,9 +11,9 @@ const Home = () => {
                 <title>Home - Hidden Pearl</title>
             </Helmet>
             <Banner />
-            <TopFoods foodsPromice={foodsPromice} />
-            <OurStory/>
-            <RestaurantStats/>
+            <TopFoods />
+            <OurStory />
+            <RestaurantStats />
         </div>
     );
 };

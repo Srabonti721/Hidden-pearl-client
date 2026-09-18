@@ -1,16 +1,9 @@
-import { use } from "react";
-import {} from "react-icons/bs";
-import { FaFacebookF, FaGreaterThan } from "react-icons/fa";
+import {} from "react";
+import { FaFacebookF } from "react-icons/fa";
 import { PiGithubLogoFill } from "react-icons/pi";
 import { TbBrandYoutubeFilled } from "react-icons/tb";
 
-const Footer = ({ foodPromice }) => {
-    const foods = use(foodPromice);
-    const purchasefood = [...foods]
-        .sort((x, y) => y.purchaseCount - x.purchaseCount)
-        .slice(0, 2);
-    console.log(purchasefood);
-
+const Footer = () => {
     return (
         <>
             <div
@@ -23,8 +16,10 @@ const Footer = ({ foodPromice }) => {
                 <div className="hero-overlay"></div>
                 <div className="footer sm:footer-horizontal text-neutral-content grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3  p-10">
                     <nav>
-                        <h6 className="text-white text-2xl border-b-4 border-orange-400">About Us</h6>
-                       
+                        <h6 className="text-white text-2xl border-b-4 border-orange-400">
+                            About Us
+                        </h6>
+
                         <p>
                             Energistically repurpose client-based odels rather
                             than magnetic sources. Intrinsicly bcks-and-mortar
@@ -54,46 +49,10 @@ const Footer = ({ foodPromice }) => {
                             </div>
                         </div>
                     </nav>
-                    <nav>
-                        <h6 className="text-white text-2xl border-b-4 border-orange-400">Food Menu</h6>
-                        <div className="grid grid-cols-2 gap-2">
-                            {foods.map((food, index) => (
-                                <>
-                                    <a
-                                        key={index}
-                                        className="hover:text-orange-400 flex items-center gap-4"
-                                    >
-                                        <FaGreaterThan /> {food.foodName} {food.name}
-                                    </a>
-                                </>
-                            ))}
-                        </div>
-                    </nav>
-                    <nav>
-                        <h6 className=" text-white text-2xl border-b-4 border-orange-400">Latest Posts</h6>
-                        {purchasefood.map((food, index) => (
-                            <>
-                                <div
-                                    key={index}
-                                    className="flex items-center gap-2"
-                                >
-                                    <img
-                                        className="w-30 h-20 object-cover transition-transform duration-500 ease-in-out hover:scale-110"
-                                        src={food.image}
-                                        alt=""
-                                    />
-                                    <div className="hover:text-orange-400">
-                                        <h2>{food.foodName}</h2>
-                                        <p>৳ {food.price}</p>
-                                    </div>
-                                </div>
-                            </>
-                        ))}
-                    </nav>
+                    <nav></nav>
                 </div>
-
             </div>
-                            <footer className="footer sm:footer-horizontal bg-neutral text-neutral-content pt-10 items-center p-4">
+            <footer className="footer sm:footer-horizontal bg-neutral text-neutral-content pt-10 items-center p-4">
                 <aside className="grid-flow-col items-center">
                     <p>
                         Copyright © {new Date().getFullYear()} - All right

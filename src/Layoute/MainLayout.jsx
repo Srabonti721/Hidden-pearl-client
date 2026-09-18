@@ -4,7 +4,6 @@ import { Outlet } from 'react-router'
 import Footer from '../Pages/Shared/Footer'
 import axios from 'axios'
 
-const foodPromice = axios.get('http://localhost:3000/foods').then((response) => response.data)
 
 const MainLayout = () => {
   
@@ -12,7 +11,7 @@ const MainLayout = () => {
     <div className='container mx-auto'>
         <Navbar/>
         <Outlet/>
-        <Footer foodPromice={foodPromice}/>
+        <Footer/>
     </div>
   )
 }
