@@ -63,7 +63,7 @@ const Navbar = () => {
     return (
         <div className="navbar bg-white shadow-sm  lg:px-6">
             <div className="navbar-start">
-                <div className="dropdown">
+                <div className="dropdown z-[999]">
                     <div
                         tabIndex={0}
                         role="button"
